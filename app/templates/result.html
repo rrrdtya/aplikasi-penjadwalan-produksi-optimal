@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Hasil Perhitungan - Aplikasi Penjadwalan Produksi Optimal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center fade-in">
+    <div class="col-lg-10">
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="card-title">
+                    <i class="fas fa-check-circle me-2"></i>Hasil Penjadwalan Produksi Optimal
+                </h1>
+                <a href="{{ url_for('main.index') }}" class="btn btn-outline-primary rounded-pill">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </a>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-info-circle me-2"></i>Ringkasan Hasil
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th>Waktu Maksimum:</th>
+                                            <td>{{ max_time|round(2) }} jam</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Batas Waktu:</th>
+                                            <td>{{ time_limit }} jam</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Efisiensi:</th>
+                                            <td>{{ ((max_time / time_limit) * 100)|round(2) }}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-industry me-2"></i>Penggunaan Mesin
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th>Mesin</th>
+                                            <th>Waktu Digunakan</th>
+                                            <th>Utilisasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for machine, time in machine_usage.items() %}
+                                        <tr>
+                                            <td>{{ machine }}</td>
+                                            <td>{{ time|round(2) }} jam</td>
+                                            <td>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-primary" 
+                                                         role="progressbar" 
+                                                         style="width: {{ (time / time_limit * 100)|round }}%;" 
+                                                         aria-valuenow="{{ (time / time_limit * 100)|round }}" 
+                                                         aria-valuemin="0" 
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <span class="small">{{ (time / time_limit * 100)|round }}%</span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-chart-bar me-2"></i>Visualisasi Jadwal Produksi
+                            </h5>
+                            <div class="text-center">
+                                <img src="data:image/png;base64,{{ plot_url }}" class="img-fluid" alt="Visualisasi Jadwal Produksi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-table me-2"></i>Detail Jadwal Produksi
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Produk</th>
+                                            <th>Mesin</th>
+                                            <th>Jumlah Unit</th>
+                                            <th>Waktu per Unit</th>
+                                            <th>Total Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in result_data %}
+                                        <tr>
+                                            <td><span class="badge bg-primary rounded-pill">{{ item.product }}</span></td>
+                                            <td><span class="badge bg-secondary rounded-pill">{{ item.machine }}</span></td>
+                                            <td>{{ item.units }}</td>
+                                            <td>{{ item.processing_time|round(2) }} jam</td>
+                                            <td>{{ item.total_time|round(2) }} jam</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary me-2">
+                    <i class="fas fa-redo me-2"></i>Optimasi Baru
+                </a>
+                <button class="btn btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Cetak Hasil
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .navbar-container, footer, .btn {
+            display: none !important;
+        }
+        .glass-card {
+            box-shadow: none !important;
+            border: 1px solid #eee !important;
+        }
+        body {
+            background: white !important;
+        }
+    }
+</style>
+{% endblock %} 
