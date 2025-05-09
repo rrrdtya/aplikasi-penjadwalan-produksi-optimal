@@ -67,3 +67,6 @@ Metode Integer Linear Programming (ILP) adalah teknik optimasi untuk mencapai ha
 ## Pengembang
 
 Kelompok 6 - Aplikasi Penjadwalan Produksi Optimal dengan Integer Programming 
+- Rahma Aditya (2395124001)
+- Maulidatul Husna (2395124011)
+- Farhan Ardiansyah (2395124027)
