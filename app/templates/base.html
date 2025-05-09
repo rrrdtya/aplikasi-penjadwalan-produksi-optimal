@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Aplikasi Penjadwalan Produksi Optimal{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar Kapsul Glassmorph -->
+    <div class="navbar-container">
+        <div class="navbar-capsule">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand fw-bold" href="{{ url_for('main.index') }}">
+                        <i class="fas fa-industry me-2"></i>KELOMPOK 6
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-button {% if request.path == url_for('main.index') %}active{% endif %}" 
+                                   href="{{ url_for('main.index') }}">
+                                    <i class="fas fa-home me-1"></i> Beranda
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-button {% if request.path == url_for('main.example') %}active{% endif %}" 
+                                   href="{{ url_for('main.example') }}">
+                                    <i class="fas fa-lightbulb me-1"></i> Contoh
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+        <div class="container">
+            &copy; 2025 Aplikasi Penjadwalan Produksi Optimal dengan Integer Programming | Kelompok 6
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Google Fonts - Poppins -->
+    <script>
+        const linkElement = document.createElement('link');
+        linkElement.rel = 'stylesheet';
+        linkElement.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+        document.head.appendChild(linkElement);
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
